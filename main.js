@@ -52,8 +52,8 @@ dirLight.shadow.camera.far = 40;
 scene.add(dirLight);
 
 // Grid
-const grid = new THREE.GridHelper(100, 100, 0x000000, 0x000000);
-grid.material.opacity = 0.2;
+const grid = new THREE.GridHelper(100, 100, 0xffffff, 0xffffff);
+grid.material.opacity = 0.5;
 grid.material.transparent = true;
 scene.add(grid);
 
@@ -90,9 +90,9 @@ loader.load('glb/spaceman.glb', (gltf) => {
     mixer = new THREE.AnimationMixer(model);
 
     if (animations && animations.length) {
-        // Assuming 'idle' and 'walk' animations exist.
+        // Assuming 'idle' and 'walking' animations exist.
         // If only one animation, use it for both.
-        const walkClip = THREE.AnimationClip.findByName(animations, 'walk');
+        const walkClip = THREE.AnimationClip.findByName(animations, 'walking');
         const idleClip = THREE.AnimationClip.findByName(animations, 'idle');
 
         if (walkClip && idleClip) {
