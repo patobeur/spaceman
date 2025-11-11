@@ -97,15 +97,10 @@ loader.load('glb/spaceman.glb', (gltf) => {
         if (walkClip && idleClip) {
             walkAction = mixer.clipAction(walkClip);
             idleAction = mixer.clipAction(idleClip);
-        } else if (animations.length >= 1) {
-            // Use the first animation for both
-            const clip = animations[0];
-            walkAction = mixer.clipAction(clip);
-            idleAction = mixer.clipAction(clip);
-        }
-
-        if (idleAction) {
             idleAction.play();
+        } else if (animations.length > 0) {
+            // Play the first animation if idle/walking aren't found
+            mixer.clipAction(animations[0]).play();
         }
     }
 
@@ -128,7 +123,9 @@ const keys = {
 
 document.addEventListener('keydown', (event) => {
     switch (event.code) {
+        case 'KeyZ':
         case 'KeyW': keys.w = true; break;
+        case 'KeyQ':
         case 'KeyA': keys.a = true; break;
         case 'KeyS': keys.s = true; break;
         case 'KeyD': keys.d = true; break;
@@ -141,7 +138,9 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
     switch (event.code) {
+        case 'KeyZ':
         case 'KeyW': keys.w = false; break;
+        case 'KeyQ':
         case 'KeyA': keys.a = false; break;
         case 'KeyS': keys.s = false; break;
         case 'KeyD': keys.d = false; break;
