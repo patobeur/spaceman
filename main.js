@@ -6,12 +6,12 @@ import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 
 // Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xa0a0a0);
+scene.background = new THREE.Color(0xa0a0aa);
 scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
-	75,
+	60,
 	window.innerWidth / window.innerHeight,
 	0.1,
 	1000
@@ -34,26 +34,27 @@ composer.addPass(renderPass);
 const bokehPass = new BokehPass(scene, camera, {
 	focus: 1.0,
 	aperture: 0.025,
-	maxblur: 0.001,
+	maxblur: 0.0015,
 	width: window.innerWidth,
 	height: window.innerHeight,
 });
 composer.addPass(bokehPass);
 
 // Lights
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666699);
 hemiLight.position.set(0, 20, 0);
 scene.add(hemiLight);
-const lightDistance = 40;
+
 const dirLight = new THREE.DirectionalLight(0xffffff);
-dirLight.position.set(3, 10, 10);
+const lightDistance = 40;
+dirLight.position.set(3, 40, 10);
 dirLight.castShadow = true;
 dirLight.shadow.camera.top = lightDistance;
 dirLight.shadow.camera.bottom = -lightDistance;
 dirLight.shadow.camera.left = -lightDistance;
 dirLight.shadow.camera.right = lightDistance;
 dirLight.shadow.camera.near = 0.1;
-dirLight.shadow.camera.far = 40;
+dirLight.shadow.camera.far = 4000;
 scene.add(dirLight);
 
 // Grid
@@ -123,6 +124,72 @@ loader.load(
 	}
 );
 
+// Mouse input
+let isMouseDown = false;
+let invertY = false;
+
+const invertYCheckbox = document.getElementById("invert-y-axis");
+invertYCheckbox.addEventListener("change", () => {
+	invertY = invertYCheckbox.checked;
+});
+
+document.addEventListener("mousedown", (event) => {
+	if (event.button === 0) {
+		// Left mouse button
+		isMouseDown = true;
+	}
+});
+
+document.addEventListener("mouseup", (event) => {
+	if (event.button === 0) {
+		// Left mouse button
+		isMouseDown = false;
+	}
+});
+
+let cameraOffset = new THREE.Vector3(0, 16, -8); // Initial camera offset
+
+document.addEventListener("mousemove", (event) => {
+	if (isMouseDown && model) {
+		const movementX =
+			event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+		let movementY =
+			event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+		if (invertY) {
+			movementY *= -1;
+		}
+
+		// Create a quaternion for the horizontal rotation
+		const quaternionX = new THREE.Quaternion().setFromAxisAngle(
+			new THREE.Vector3(0, 1, 0),
+			-movementX * 0.01
+		);
+
+		// Apply the horizontal rotation to the camera offset
+		cameraOffset.applyQuaternion(quaternionX);
+
+		// Vertical rotation with clamping
+		const verticalAngle = Math.asin(cameraOffset.y / cameraOffset.length());
+		const maxVerticalAngle = Math.PI / 2 - 0.1; // Clamp near the poles
+		const newVerticalAngle = verticalAngle - movementY * 0.01;
+
+		if (Math.abs(newVerticalAngle) < maxVerticalAngle) {
+			const rotationAxis = new THREE.Vector3(1, 0, 0).applyQuaternion(
+				new THREE.Quaternion().setFromUnitVectors(
+					new THREE.Vector3(0, 0, -1),
+					new THREE.Vector3(cameraOffset.x, 0, cameraOffset.z).normalize()
+				)
+			);
+			const quaternionY = new THREE.Quaternion().setFromAxisAngle(
+				rotationAxis,
+				-movementY * 0.01
+			);
+			cameraOffset.applyQuaternion(quaternionY);
+		}
+	}
+});
+
 // Keyboard input
 const keys = {
 	w: false,
@@ -148,6 +215,7 @@ document.addEventListener("keydown", (event) => {
 		case "KeyS":
 			keys.s = true;
 			break;
+		case "KeyE":
 		case "KeyD":
 			keys.d = true;
 			break;
@@ -179,6 +247,7 @@ document.addEventListener("keyup", (event) => {
 		case "KeyS":
 			keys.s = false;
 			break;
+		case "KeyE":
 		case "KeyD":
 			keys.d = false;
 			break;
@@ -229,33 +298,58 @@ function animate() {
 		}
 
 		if (keys.w || keys.arrowUp) {
+			// avant
 			model.translateZ(moveSpeed);
 		}
 		if (keys.s || keys.arrowDown) {
+			// arriere
 			model.translateZ(-moveSpeed);
 		}
+		const right = new THREE.Vector3()
+			// ???
+			.crossVectors(
+				camera.up,
+				new THREE.Vector3().subVectors(model.position, camera.position)
+			)
+			.normalize();
+
 		if (keys.a || keys.arrowLeft) {
-			model.rotateY(rotateSpeed);
+			console.log("gauche Left");
+			model.position.addScaledVector(right, moveSpeed);
 		}
 		if (keys.d || keys.arrowRight) {
-			model.rotateY(-rotateSpeed);
+			console.log("droite Right");
+			model.position.addScaledVector(right, -moveSpeed);
 		}
 
 		// Third-person camera
 		const targetPosition = new THREE.Vector3();
 		model.getWorldPosition(targetPosition);
 
-		const cameraOffset = new THREE.Vector3(0, 4, -8); // x, y, z offset
-		const cameraPosition = cameraOffset
-			.clone()
-			.applyQuaternion(model.quaternion);
-		cameraPosition.add(targetPosition);
+		const cameraPosition = targetPosition.clone().add(cameraOffset);
 
 		camera.position.lerp(cameraPosition, 0.1);
+		camera.lookAt(
+			targetPosition
+				.clone()
+				.set(targetPosition.x, targetPosition.y + 1.5, targetPosition.z)
+		);
 
-		const lookAtPosition = new THREE.Vector3().copy(targetPosition);
-		lookAtPosition.y += 1.5; // Look at the torso
-		camera.lookAt(lookAtPosition);
+		// Character orientation
+		const lookDirection = new THREE.Vector3().subVectors(
+			camera.position,
+			targetPosition
+		);
+		lookDirection.y = 0;
+		lookDirection.normalize();
+
+		const angle = Math.atan2(lookDirection.x, lookDirection.z);
+
+		const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
+			new THREE.Vector3(0, 1, 0),
+			angle + Math.PI
+		);
+		model.quaternion.slerp(targetQuaternion, 0.1);
 	}
 
 	requestAnimationFrame(animate);
