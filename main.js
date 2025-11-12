@@ -96,6 +96,7 @@ loader.load(
 		model.add(characterModel);
 
 		characterModel.rotation.x = Math.PI / 2;
+		characterModel.rotation.y = Math.PI;
 
 		characterModel.traverse((child) => {
 			if (child.isMesh) {
@@ -368,7 +369,7 @@ function animate() {
 
 		const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
 			new THREE.Vector3(0, 0, 1),
-			angle + Math.PI // Face away from camera
+			angle // Face away from camera
 		);
 		model.quaternion.slerp(targetQuaternion, 0.1);
 
