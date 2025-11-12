@@ -125,6 +125,12 @@ loader.load(
 
 // Mouse input
 let isMouseDown = false;
+let invertY = false;
+
+const invertYCheckbox = document.getElementById('invert-y-axis');
+invertYCheckbox.addEventListener('change', () => {
+    invertY = invertYCheckbox.checked;
+});
 
 document.addEventListener("mousedown", (event) => {
 	if (event.button === 0) { // Left mouse button
@@ -143,7 +149,11 @@ let cameraOffset = new THREE.Vector3(0, 4, -8); // Initial camera offset
 document.addEventListener("mousemove", (event) => {
 	if (isMouseDown && model) {
 		const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-		const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+		let movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+		if (invertY) {
+			movementY *= -1;
+		}
 
 		// Create a quaternion for the horizontal rotation
 		const quaternionX = new THREE.Quaternion().setFromAxisAngle(

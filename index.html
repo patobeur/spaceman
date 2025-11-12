@@ -7,9 +7,22 @@
     <style>
         body { margin: 0; }
         canvas { display: block; }
+        #options-menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
+    <div id="options-menu">
+        <input type="checkbox" id="invert-y-axis">
+        <label for="invert-y-axis">Inverser Haut/Bas</label>
+    </div>
     <script type="importmap">
         {
             "imports": {
