@@ -5,6 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Three.js 3D Scene</title>
 		<style>
+			* {
+				box-sizing: border-box;
+			}
 			body {
 				margin: 0;
 			}
@@ -20,6 +23,48 @@
 				padding: 10px;
 				border-radius: 5px;
 			}
+			#barres {
+				position: absolute;
+				bottom: 10px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-radius: 5px;
+				width: 40%;
+			}
+			.barre {
+				width: 0%;
+				margin: 0;
+				text-align: end;
+				text-align: center;
+				margin-bottom: 2px;
+				border-radius: 5px;
+				border: 1px solid #000000;
+				font-size: 0.6rem;
+			}
+			.barre::after {
+				text-transform: uppercase;
+				font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+					"Lucida Sans", Arial, sans-serif;
+				color: aliceblue;
+			}
+			.barre.vie {
+				background-color: brown;
+			}
+			.barre.vie::after {
+				content: "vie";
+			}
+			.barre.energie {
+				background-color: rgb(42, 165, 63);
+			}
+			.barre.energie::after {
+				content: "energie";
+			}
+			.barre.structure {
+				background-color: rgb(50, 42, 165);
+			}
+			.barre.structure::after {
+				content: "structure";
+			}
 		</style>
 	</head>
 	<body>
@@ -28,6 +73,17 @@
 			<label for="invert-y-axis">Inverser Haut/Bas</label>
 			<div id="coordinates"></div>
 			<div id="rotation"></div>
+		</div>
+		<div id="barres">
+			<div id="barredevie" style="width: 100%" class="barre vie"></div>
+			<div
+				id="barredenergie"
+				style="width: 100%"
+				class="barre energie"></div>
+			<div
+				id="barredestructure"
+				style="width: 100%"
+				class="barre structure"></div>
 		</div>
 		<script type="importmap">
 			{
