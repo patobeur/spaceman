@@ -16,7 +16,8 @@ const camera = new THREE.PerspectiveCamera(
 	0.1,
 	1000
 );
-camera.position.set(0, 2, 5);
+camera.position.set(0, 5, 2);
+camera.up.set(0, 0, 1);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -42,12 +43,12 @@ composer.addPass(bokehPass);
 
 // Lights
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666699);
-hemiLight.position.set(0, 20, 0);
+hemiLight.position.set(0, 0, 20);
 scene.add(hemiLight);
 
 const dirLight = new THREE.DirectionalLight(0xffffff);
 const lightDistance = 40;
-dirLight.position.set(3, 40, 10);
+dirLight.position.set(3, 10, 40);
 dirLight.castShadow = true;
 dirLight.shadow.camera.top = lightDistance;
 dirLight.shadow.camera.bottom = -lightDistance;
@@ -59,6 +60,7 @@ scene.add(dirLight);
 
 // Grid
 const grid = new THREE.GridHelper(100, 100, 0xffffff, 0xffffff);
+grid.rotation.x = Math.PI / 2;
 grid.material.opacity = 0.5;
 grid.material.transparent = true;
 scene.add(grid);
@@ -68,7 +70,6 @@ const ground = new THREE.Mesh(
 	new THREE.PlaneGeometry(100, 100),
 	new THREE.MeshPhongMaterial({ color: 0x9999bb, depthWrite: false })
 );
-ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
@@ -88,16 +89,22 @@ let idleAction, walkAction, currentAction;
 loader.load(
 	"glb/RobotExpressive.glb",
 	(gltf) => {
-		model = gltf.scene;
-		model.traverse((child) => {
+		const characterModel = gltf.scene;
+		animations = gltf.animations;
+
+		model = new THREE.Object3D();
+		model.add(characterModel);
+
+		characterModel.rotation.x = Math.PI / 2;
+
+		characterModel.traverse((child) => {
 			if (child.isMesh) {
 				child.castShadow = true;
 				child.receiveShadow = true;
 			}
 		});
-		animations = gltf.animations;
 
-		mixer = new THREE.AnimationMixer(model);
+		mixer = new THREE.AnimationMixer(characterModel);
 
 		if (animations && animations.length) {
 			// Assuming 'idle' and 'walking' animations exist.
@@ -147,7 +154,7 @@ document.addEventListener("mouseup", (event) => {
 	}
 });
 
-let cameraOffset = new THREE.Vector3(0, 16, -8); // Initial camera offset
+let cameraOffset = new THREE.Vector3(0, -8, 16); // Initial camera offset
 
 document.addEventListener("mousemove", (event) => {
 	if (isMouseDown && model) {
@@ -162,7 +169,7 @@ document.addEventListener("mousemove", (event) => {
 
 		// Create a quaternion for the horizontal rotation
 		const quaternionX = new THREE.Quaternion().setFromAxisAngle(
-			new THREE.Vector3(0, 1, 0),
+			new THREE.Vector3(0, 0, 1),
 			-movementX * 0.01
 		);
 
@@ -170,15 +177,15 @@ document.addEventListener("mousemove", (event) => {
 		cameraOffset.applyQuaternion(quaternionX);
 
 		// Vertical rotation with clamping
-		const verticalAngle = Math.asin(cameraOffset.y / cameraOffset.length());
+		const verticalAngle = Math.asin(cameraOffset.z / cameraOffset.length());
 		const maxVerticalAngle = Math.PI / 2 - 0.1; // Clamp near the poles
 		const newVerticalAngle = verticalAngle - movementY * 0.01;
 
 		if (Math.abs(newVerticalAngle) < maxVerticalAngle) {
 			const rotationAxis = new THREE.Vector3(1, 0, 0).applyQuaternion(
 				new THREE.Quaternion().setFromUnitVectors(
-					new THREE.Vector3(0, 0, -1),
-					new THREE.Vector3(cameraOffset.x, 0, cameraOffset.z).normalize()
+					new THREE.Vector3(0, -1, 0),
+					new THREE.Vector3(cameraOffset.x, cameraOffset.y, 0).normalize()
 				)
 			);
 			const quaternionY = new THREE.Quaternion().setFromAxisAngle(
@@ -299,57 +306,69 @@ function animate() {
 			}
 		}
 
-		if (keys.w || keys.arrowUp) {
-			// avant
-			model.translateZ(moveSpeed);
-		}
-		if (keys.s || keys.arrowDown) {
-			// arriere
-			model.translateZ(-moveSpeed);
-		}
-		const right = new THREE.Vector3()
-			// ???
-			.crossVectors(
-				camera.up,
-				new THREE.Vector3().subVectors(model.position, camera.position)
-			)
-			.normalize();
-
-		if (keys.a || keys.arrowLeft) {
-			console.log("gauche Left");
-			model.position.addScaledVector(right, moveSpeed);
-		}
-		if (keys.d || keys.arrowRight) {
-			console.log("droite Right");
-			model.position.addScaledVector(right, -moveSpeed);
-		}
-
-		// Third-person camera
 		const targetPosition = new THREE.Vector3();
 		model.getWorldPosition(targetPosition);
 
-		const cameraPosition = targetPosition.clone().add(cameraOffset);
-
-		camera.position.lerp(cameraPosition, 0.1);
-		camera.lookAt(
-			targetPosition
-				.clone()
-				.set(targetPosition.x, targetPosition.y + 1.5, targetPosition.z)
-		);
-
-		// Character orientation
+		// --- Character Orientation & Movement Vectors ---
 		const lookDirection = new THREE.Vector3().subVectors(
 			camera.position,
 			targetPosition
 		);
-		lookDirection.y = 0;
+		lookDirection.z = 0;
 		lookDirection.normalize();
 
-		const angle = Math.atan2(lookDirection.x, lookDirection.z);
+		// The forward vector is the direction from the camera to the character on the XY plane.
+		const forward = lookDirection.negate();
+		// The right vector is perpendicular to the forward vector on the XY plane.
+		const right = new THREE.Vector3().crossVectors(
+			new THREE.Vector3(0, 0, 1),
+			forward
+		);
+
+		// --- Character Movement ---
+		if (keys.w || keys.arrowUp) {
+			model.position.addScaledVector(forward, moveSpeed);
+		}
+		if (keys.s || keys.arrowDown) {
+			model.position.addScaledVector(forward, -moveSpeed);
+		}
+		if (keys.a || keys.arrowLeft) {
+			model.position.addScaledVector(right, moveSpeed); // Strafe Left
+		}
+		if (keys.d || keys.arrowRight) {
+			model.position.addScaledVector(right, -moveSpeed); // Strafe Right
+		}
+
+		// --- Camera Update ---
+		const updatedTargetPosition = new THREE.Vector3();
+		model.getWorldPosition(updatedTargetPosition);
+
+		const cameraPosition = updatedTargetPosition.clone().add(cameraOffset);
+
+		camera.position.lerp(cameraPosition, 0.1);
+		camera.lookAt(
+			updatedTargetPosition
+				.clone()
+				.set(
+					updatedTargetPosition.x,
+					updatedTargetPosition.y,
+					updatedTargetPosition.z + 1.5
+				)
+		);
+
+		// --- Character Orientation ---
+		const orientationDirection = new THREE.Vector3().subVectors(
+			camera.position,
+			updatedTargetPosition
+		);
+		orientationDirection.z = 0;
+		orientationDirection.normalize();
+
+		const angle = Math.atan2(orientationDirection.x, orientationDirection.y);
 
 		const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
-			new THREE.Vector3(0, 1, 0),
-			angle + Math.PI
+			new THREE.Vector3(0, 0, 1),
+			angle + Math.PI // Face away from camera
 		);
 		model.quaternion.slerp(targetQuaternion, 0.1);
 
