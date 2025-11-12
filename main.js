@@ -4,6 +4,8 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 
+const consoleActive = true;
+
 // Scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xa0a0bb);
@@ -96,6 +98,11 @@ loader.load(
 			}
 		});
 		animations = gltf.animations;
+		if (animations) {
+			if (consoleActive) {
+				console.log(animations);
+			}
+		}
 
 		mixer = new THREE.AnimationMixer(model);
 
@@ -200,10 +207,14 @@ const keys = {
 	arrowLeft: false,
 	arrowDown: false,
 	arrowRight: false,
+	e: false,
 };
 
 document.addEventListener("keydown", (event) => {
 	switch (event.code) {
+		case "KeyE":
+			keys.e = true;
+			break;
 		case "KeyZ":
 		case "KeyW":
 			keys.w = true;
@@ -236,6 +247,9 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keyup", (event) => {
 	switch (event.code) {
+		case "KeyE":
+			keys.e = false;
+			break;
 		case "KeyZ":
 		case "KeyW":
 			keys.w = false;
@@ -287,12 +301,10 @@ function animate() {
 
 		if (walkAction && idleAction) {
 			if (isMovingOrRotating && currentAction !== walkAction) {
-				console.log("Switching to walking animation");
 				currentAction = walkAction;
 				idleAction.fadeOut(0.2);
 				walkAction.reset().fadeIn(0.2).play();
 			} else if (!isMovingOrRotating && currentAction !== idleAction) {
-				console.log("Switching to idle animation");
 				currentAction = idleAction;
 				walkAction.fadeOut(0.2);
 				idleAction.reset().fadeIn(0.2).play();
@@ -316,11 +328,11 @@ function animate() {
 			.normalize();
 
 		if (keys.a || keys.arrowLeft) {
-			console.log("gauche Left");
+			if (consoleActive) console.log("gauche Left");
 			model.position.addScaledVector(right, moveSpeed);
 		}
 		if (keys.d || keys.arrowRight) {
-			console.log("droite Right");
+			if (consoleActive) console.log("droite Right");
 			model.position.addScaledVector(right, -moveSpeed);
 		}
 
