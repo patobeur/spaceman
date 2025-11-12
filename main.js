@@ -74,7 +74,7 @@ window.addEventListener('resize', () => {
 // Load 3D model
 const loader = new GLTFLoader();
 let model, animations, mixer;
-let idleAction, walkAction;
+let idleAction, walkAction, currentAction;
 
 loader.load('glb/spaceman.glb', (gltf) => {
     model = gltf.scene;
@@ -97,6 +97,7 @@ loader.load('glb/spaceman.glb', (gltf) => {
         if (walkClip && idleClip) {
             walkAction = mixer.clipAction(walkClip);
             idleAction = mixer.clipAction(idleClip);
+            currentAction = idleAction;
             idleAction.play();
         } else if (animations.length > 0) {
             // Play the first animation if idle/walking aren't found
@@ -166,18 +167,19 @@ function animate() {
 
         const isMoving = keys.w || keys.arrowUp || keys.s || keys.arrowDown;
         const isRotating = keys.a || keys.arrowLeft || keys.d || keys.arrowRight;
+        const isMovingOrRotating = isMoving || isRotating;
 
         if (walkAction && idleAction) {
-            if (isMoving || isRotating) {
-                if (idleAction.isRunning()) {
-                    idleAction.fadeOut(0.2);
-                    walkAction.reset().fadeIn(0.2).play();
-                }
-            } else {
-                if (walkAction.isRunning()) {
-                    walkAction.fadeOut(0.2);
-                    idleAction.reset().fadeIn(0.2).play();
-                }
+            if (isMovingOrRotating && currentAction !== walkAction) {
+                console.log('Switching to walking animation');
+                currentAction = walkAction;
+                idleAction.fadeOut(0.2);
+                walkAction.reset().fadeIn(0.2).play();
+            } else if (!isMovingOrRotating && currentAction !== idleAction) {
+                console.log('Switching to idle animation');
+                currentAction = idleAction;
+                walkAction.fadeOut(0.2);
+                idleAction.reset().fadeIn(0.2).play();
             }
         }
 
