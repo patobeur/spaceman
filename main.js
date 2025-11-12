@@ -6,8 +6,8 @@ import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 
 // Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xa0a0aa);
-scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
+scene.background = new THREE.Color(0xa0a0bb);
+scene.fog = new THREE.Fog(0xa0a0bb, 20, 50);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -66,7 +66,7 @@ scene.add(grid);
 // Ground
 const ground = new THREE.Mesh(
 	new THREE.PlaneGeometry(100, 100),
-	new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+	new THREE.MeshPhongMaterial({ color: 0x9999bb, depthWrite: false })
 );
 ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
@@ -268,6 +268,8 @@ document.addEventListener("keyup", (event) => {
 
 // Animation loop
 const clock = new THREE.Clock();
+const coordinatesDiv = document.getElementById("coordinates");
+const rotationDiv = document.getElementById("rotation");
 function animate() {
 	const delta = clock.getDelta();
 
@@ -350,6 +352,19 @@ function animate() {
 			angle + Math.PI
 		);
 		model.quaternion.slerp(targetQuaternion, 0.1);
+
+		// Update UI
+		const position = model.position;
+		coordinatesDiv.textContent =
+			`x: ${position.x.toFixed(2)},` +
+			` y: ${position.y.toFixed(2)},` +
+			` z: ${position.z.toFixed(2)}`;
+
+		const rotation = new THREE.Euler().setFromQuaternion(model.quaternion);
+		rotationDiv.textContent =
+			`x: ${(rotation.x * (180 / Math.PI)).toFixed(2)}°, ` +
+			`y: ${(rotation.y * (180 / Math.PI)).toFixed(2)}°, ` +
+			`z: ${(rotation.z * (180 / Math.PI)).toFixed(2)}°, `;
 	}
 
 	requestAnimationFrame(animate);
