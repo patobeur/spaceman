@@ -1,0 +1,76 @@
+// js/scene.js
+import * as THREE from "three";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+
+export function setupScene() {
+	const scene = new THREE.Scene();
+	scene.background = new THREE.Color(0xa0a0bb);
+	scene.fog = new THREE.Fog(0xa0a0bb, 20, 50);
+
+	const camera = new THREE.PerspectiveCamera(
+		60,
+		window.innerWidth / window.innerHeight,
+		0.1,
+		1000
+	);
+	camera.position.set(0, 2, 5);
+
+	const renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.shadowMap.enabled = true;
+	document.getElementById("game-container").appendChild(renderer.domElement);
+
+	const composer = new EffectComposer(renderer);
+	const renderPass = new RenderPass(scene, camera);
+	composer.addPass(renderPass);
+
+	const bokehPass = new BokehPass(scene, camera, {
+		focus: 1.0,
+		aperture: 0.025,
+		maxblur: 0.0015,
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
+	composer.addPass(bokehPass);
+
+	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666699);
+	hemiLight.position.set(0, 20, 0);
+	scene.add(hemiLight);
+
+	const dirLight = new THREE.DirectionalLight(0xffffff);
+	const lightDistance = 40;
+	dirLight.position.set(3, 40, 10);
+	dirLight.castShadow = true;
+	dirLight.shadow.camera.top = lightDistance;
+	dirLight.shadow.camera.bottom = -lightDistance;
+	dirLight.shadow.camera.left = -lightDistance;
+	dirLight.shadow.camera.right = lightDistance;
+	dirLight.shadow.camera.near = 0.1;
+	dirLight.shadow.camera.far = 4000;
+	scene.add(dirLight);
+
+	const grid = new THREE.GridHelper(100, 100, 0xffffff, 0xffffff);
+	grid.material.opacity = 0.5;
+	grid.material.transparent = true;
+	scene.add(grid);
+
+	const ground = new THREE.Mesh(
+		new THREE.PlaneGeometry(100, 100),
+		new THREE.MeshPhongMaterial({ color: 0x9999bb, depthWrite: false })
+	);
+	ground.rotation.x = -Math.PI / 2;
+	ground.receiveShadow = true;
+	scene.add(ground);
+
+	window.addEventListener("resize", () => {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		composer.setSize(window.innerWidth, window.innerHeight);
+	});
+
+	return { scene, camera, renderer, composer };
+}
