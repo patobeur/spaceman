@@ -1,19 +1,22 @@
 // main.js
 import * as THREE from "three";
-import { setupScene } from "./js/scene.js";
+import { setupScene, rocks } from "./js/scene.js";
 import { loadModel } from "./js/loader.js";
 import { setupControls } from "./js/controls.js";
 import { updateUI } from "./js/ui.js";
 
 const { scene, camera, renderer, composer } = setupScene();
-let model, mixer, walkAction, idleAction, currentAction;
+let model, mixer, walkAction, idleAction, standingAction, thumbsUpAction, currentAction;
 let controls;
+let isMining = false;
 
-loadModel(scene, (loadedModel, loadedMixer, loadedWalkAction, loadedIdleAction, loadedCurrentAction) => {
+loadModel(scene, (loadedModel, loadedMixer, loadedWalkAction, loadedIdleAction, loadedStandingAction, loadedThumbsUpAction, loadedCurrentAction) => {
 	model = loadedModel;
 	mixer = loadedMixer;
 	walkAction = loadedWalkAction;
 	idleAction = loadedIdleAction;
+	standingAction = loadedStandingAction;
+	thumbsUpAction = loadedThumbsUpAction;
 	currentAction = loadedCurrentAction;
 	controls = setupControls(camera, model, document);
 });
@@ -27,13 +30,44 @@ function animate() {
 		mixer.update(delta);
 	}
 
-	if (model && controls) {
+	if (model && controls && !isMining) {
 		const { keys, cameraOffset } = controls;
 		const moveSpeed = 5 * delta;
 
 		const isMoving = keys.w || keys.arrowUp || keys.s || keys.arrowDown;
 		const isRotating = keys.a || keys.arrowLeft || keys.d || keys.arrowRight;
 		const isMovingOrRotating = isMoving || isRotating;
+
+		if (keys.f) {
+			rocks.forEach(rock => {
+				if (model.position.distanceTo(rock.position) < 2 && rock.userData.ore > 0) {
+					isMining = true;
+					currentAction.fadeOut(0.2);
+					standingAction.reset().fadeIn(0.2).play();
+					currentAction = standingAction;
+
+					setTimeout(() => {
+						rock.userData.ore--;
+						if (rock.userData.ore === 0) {
+							currentAction.fadeOut(0.2);
+							thumbsUpAction.reset().fadeIn(0.2).play();
+							currentAction = thumbsUpAction;
+							setTimeout(() => {
+								isMining = false;
+								currentAction.fadeOut(0.2);
+								idleAction.reset().fadeIn(0.2).play();
+								currentAction = idleAction;
+							}, 2000);
+						} else {
+							isMining = false;
+							currentAction.fadeOut(0.2);
+							idleAction.reset().fadeIn(0.2).play();
+							currentAction = idleAction;
+						}
+					}, 2000);
+				}
+			});
+		}
 
 		if (walkAction && idleAction) {
 			if (isMovingOrRotating && currentAction !== walkAction) {
