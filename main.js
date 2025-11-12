@@ -369,7 +369,7 @@ function animate() {
 
 		const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
 			new THREE.Vector3(0, 0, 1),
-			angle // Face away from camera
+			angle + Math.PI // Face away from camera
 		);
 		model.quaternion.slerp(targetQuaternion, 0.1);
 
