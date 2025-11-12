@@ -61,12 +61,13 @@ export function setupControls(camera, model, document) {
 	const keys = {
 		w: false, a: false, s: false, d: false,
 		arrowUp: false, arrowLeft: false, arrowDown: false, arrowRight: false,
-		e: false,
+		e: false, f: false,
 	};
 
 	document.addEventListener("keydown", (event) => {
 		switch (event.code) {
 			case "KeyE": keys.e = true; break;
+			case "KeyF": keys.f = true; break;
 			case "KeyZ": case "KeyW": keys.w = true; break;
 			case "KeyQ": case "KeyA": keys.a = true; break;
 			case "KeyS": keys.s = true; break;
@@ -81,6 +82,7 @@ export function setupControls(camera, model, document) {
 	document.addEventListener("keyup", (event) => {
 		switch (event.code) {
 			case "KeyE": keys.e = false; break;
+			case "KeyF": keys.f = false; break;
 			case "KeyZ": case "KeyW": keys.w = false; break;
 			case "KeyQ": case "KeyA": keys.a = false; break;
 			case "KeyS": keys.s = false; break;
