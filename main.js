@@ -123,6 +123,58 @@ loader.load(
 	}
 );
 
+// Mouse input
+let isMouseDown = false;
+
+document.addEventListener("mousedown", (event) => {
+	if (event.button === 0) { // Left mouse button
+		isMouseDown = true;
+	}
+});
+
+document.addEventListener("mouseup", (event) => {
+	if (event.button === 0) { // Left mouse button
+		isMouseDown = false;
+	}
+});
+
+let cameraOffset = new THREE.Vector3(0, 4, -8); // Initial camera offset
+
+document.addEventListener("mousemove", (event) => {
+	if (isMouseDown && model) {
+		const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+		const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+		// Create a quaternion for the horizontal rotation
+		const quaternionX = new THREE.Quaternion().setFromAxisAngle(
+			new THREE.Vector3(0, 1, 0),
+			-movementX * 0.01
+		);
+
+		// Apply the horizontal rotation to the camera offset
+		cameraOffset.applyQuaternion(quaternionX);
+
+		// Vertical rotation with clamping
+		const verticalAngle = Math.asin(cameraOffset.y / cameraOffset.length());
+		const maxVerticalAngle = Math.PI / 2 - 0.1; // Clamp near the poles
+		const newVerticalAngle = verticalAngle - movementY * 0.01;
+
+		if (Math.abs(newVerticalAngle) < maxVerticalAngle) {
+			const rotationAxis = new THREE.Vector3(1, 0, 0).applyQuaternion(
+				new THREE.Quaternion().setFromUnitVectors(
+					new THREE.Vector3(0, 0, -1),
+					new THREE.Vector3(cameraOffset.x, 0, cameraOffset.z).normalize()
+				)
+			);
+			const quaternionY = new THREE.Quaternion().setFromAxisAngle(
+				rotationAxis,
+				-movementY * 0.01
+			);
+			cameraOffset.applyQuaternion(quaternionY);
+		}
+	}
+});
+
 // Keyboard input
 const keys = {
 	w: false,
@@ -234,28 +286,40 @@ function animate() {
 		if (keys.s || keys.arrowDown) {
 			model.translateZ(-moveSpeed);
 		}
+		const right = new THREE.Vector3().crossVectors(
+			camera.up,
+			new THREE.Vector3().subVectors(model.position, camera.position)
+		).normalize();
+
 		if (keys.a || keys.arrowLeft) {
-			model.rotateY(rotateSpeed);
+			model.position.addScaledVector(right, -moveSpeed);
 		}
 		if (keys.d || keys.arrowRight) {
-			model.rotateY(-rotateSpeed);
+			model.position.addScaledVector(right, moveSpeed);
 		}
 
 		// Third-person camera
 		const targetPosition = new THREE.Vector3();
 		model.getWorldPosition(targetPosition);
 
-		const cameraOffset = new THREE.Vector3(0, 4, -8); // x, y, z offset
-		const cameraPosition = cameraOffset
-			.clone()
-			.applyQuaternion(model.quaternion);
-		cameraPosition.add(targetPosition);
+		const cameraPosition = targetPosition.clone().add(cameraOffset);
 
 		camera.position.lerp(cameraPosition, 0.1);
+		camera.lookAt(targetPosition.clone().set(targetPosition.x, targetPosition.y + 1.5, targetPosition.z));
 
-		const lookAtPosition = new THREE.Vector3().copy(targetPosition);
-		lookAtPosition.y += 1.5; // Look at the torso
-		camera.lookAt(lookAtPosition);
+		// Character orientation
+		const lookDirection = new THREE.Vector3()
+			.subVectors(camera.position, targetPosition);
+		lookDirection.y = 0;
+		lookDirection.normalize();
+
+		const angle = Math.atan2(lookDirection.x, lookDirection.z);
+
+		const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
+			new THREE.Vector3(0, 1, 0),
+			angle + Math.PI
+		);
+		model.quaternion.slerp(targetQuaternion, 0.1);
 	}
 
 	requestAnimationFrame(animate);
