@@ -1,0 +1,978 @@
+{
+	"file": "RobotExpressive.glb",
+	"prefix": "",
+	"scale": 0.1,
+	"speed": 0.018,
+	"rotSpeed": 0.035,
+	"animationsByName": [],
+	"animations": [
+		{
+			"name": "Dance",
+			"duration": 3.333333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Body.position",
+					"keys": 81
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 81
+				}
+			]
+		},
+		{
+			"name": "Death",
+			"duration": 0.958333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "FootL.position",
+					"keys": 24
+				},
+				{
+					"name": "FootL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Body.position",
+					"keys": 24
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Head.position",
+					"keys": 24
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "ShoulderL.position",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "ShoulderR.position",
+					"keys": 24
+				},
+				{
+					"name": "ShoulderR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "FootR.position",
+					"keys": 24
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 24
+				}
+			]
+		},
+		{
+			"name": "Idle",
+			"duration": 3.333333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 81
+				},
+				{
+					"name": "Body.position",
+					"keys": 81
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 81
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 81
+				}
+			]
+		},
+		{
+			"name": "Jump",
+			"duration": 0.708333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 18
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 18
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 18
+				},
+				{
+					"name": "FootL.position",
+					"keys": 18
+				},
+				{
+					"name": "FootL.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "Body.position",
+					"keys": 18
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "Neck.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "Head.position",
+					"keys": 18
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 18
+				},
+				{
+					"name": "FootR.position",
+					"keys": 18
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 18
+				}
+			]
+		},
+		{
+			"name": "No",
+			"duration": 1.666667,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Body.position",
+					"keys": 41
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 41
+				}
+			]
+		},
+		{
+			"name": "Punch",
+			"duration": 0.833333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "Body.position",
+					"keys": 21
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "ShoulderR.position",
+					"keys": 21
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "FootR.position",
+					"keys": 21
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 21
+				}
+			]
+		},
+		{
+			"name": "Running",
+			"duration": 0.958333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "FootL.position",
+					"keys": 24
+				},
+				{
+					"name": "FootL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Body.position",
+					"keys": 24
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Neck.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "ShoulderR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "FootR.position",
+					"keys": 24
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 24
+				}
+			]
+		},
+		{
+			"name": "Sitting",
+			"duration": 0.416667,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Body.position",
+					"keys": 11
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 11
+				}
+			]
+		},
+		{
+			"name": "Standing",
+			"duration": 0.416667,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 11
+				},
+				{
+					"name": "Body.position",
+					"keys": 11
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 11
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 11
+				}
+			]
+		},
+		{
+			"name": "ThumbsUp",
+			"duration": 1.583333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 39
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 39
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 39
+				},
+				{
+					"name": "Body.position",
+					"keys": 39
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "Middle1R.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "ThumbR.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "Thumb2R.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "IndexR.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "Ring1R.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 39
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 39
+				}
+			]
+		},
+		{
+			"name": "Walking",
+			"duration": 0.958333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 24
+				},
+				{
+					"name": "FootL.position",
+					"keys": 24
+				},
+				{
+					"name": "FootL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Body.position",
+					"keys": 24
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Neck.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "ShoulderR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "PoleTargetL.position",
+					"keys": 24
+				},
+				{
+					"name": "FootR.position",
+					"keys": 24
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 24
+				},
+				{
+					"name": "PoleTargetR.position",
+					"keys": 24
+				}
+			]
+		},
+		{
+			"name": "WalkJump",
+			"duration": 0.833333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 21
+				},
+				{
+					"name": "FootL.position",
+					"keys": 21
+				},
+				{
+					"name": "FootL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "Body.position",
+					"keys": 21
+				},
+				{
+					"name": "Body.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "Neck.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperArmL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerArmL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "ShoulderR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 21
+				},
+				{
+					"name": "FootR.position",
+					"keys": 21
+				},
+				{
+					"name": "FootR.quaternion",
+					"keys": 21
+				}
+			]
+		},
+		{
+			"name": "Wave",
+			"duration": 1.833333,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 45
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 45
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 45
+				},
+				{
+					"name": "Body.position",
+					"keys": 45
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "ShoulderR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "UpperArmR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "LowerArmR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Middle1R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Middle2R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "ThumbR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Thumb2R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "IndexR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Index2R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Ring1R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "Ring2R.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 45
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 45
+				}
+			]
+		},
+		{
+			"name": "Yes",
+			"duration": 1.666667,
+			"tracks": [
+				{
+					"name": "Head_2.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Head_3.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Head_4.morphTargetInfluences",
+					"keys": 41
+				},
+				{
+					"name": "Body.position",
+					"keys": 41
+				},
+				{
+					"name": "Head.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "UpperLegL.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "LowerLegL.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "UpperLegR.quaternion",
+					"keys": 41
+				},
+				{
+					"name": "LowerLegR.quaternion",
+					"keys": 41
+				}
+			]
+		}
+	]
+}
