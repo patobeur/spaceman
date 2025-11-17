@@ -3,12 +3,13 @@ import * as THREE from "three";
 import { setupScene, rocks } from "./js/scene.js";
 import { loadModel } from "./js/loader.js";
 import { setupControls } from "./js/controls.js";
-import { updateUI } from "./js/ui.js";
+import { updateUI, updateDistanceUI, showCollisionMessage } from "./js/ui.js";
 
 const { scene, camera, renderer, composer } = setupScene();
 let model, mixer, walkAction, idleAction, standingAction, thumbsUpAction, currentAction;
 let controls;
 let isMining = false;
+let isColliding = false;
 
 loadModel(scene, (loadedModel, loadedMixer, loadedWalkAction, loadedIdleAction, loadedStandingAction, loadedThumbsUpAction, loadedCurrentAction) => {
 	model = loadedModel;
@@ -102,10 +103,44 @@ function animate() {
 		model.quaternion.slerp(targetQuaternion, 0.1);
 
 		updateUI(model);
+		updateDistanceInfo();
+		checkCollisions();
 	}
 
 	requestAnimationFrame(animate);
 	composer.render();
+}
+
+function updateDistanceInfo() {
+	if (!model || rocks.length === 0) {
+		return;
+	}
+
+	let closestRockDistance = Infinity;
+	rocks.forEach(rock => {
+		const distance = model.position.distanceTo(rock.position);
+		if (distance < closestRockDistance) {
+			closestRockDistance = distance;
+		}
+	});
+
+	updateDistanceUI(closestRockDistance);
+}
+
+function checkCollisions() {
+	let collision = false;
+	rocks.forEach(rock => {
+		if (model.position.distanceTo(rock.position) < 1.5) {
+			collision = true;
+		}
+	});
+
+	if (collision && !isColliding) {
+		isColliding = true;
+		showCollisionMessage("Collision !");
+	} else if (!collision && isColliding) {
+		isColliding = false;
+	}
 }
 
 animate();
