@@ -19,3 +19,13 @@ export function updateUI(model) {
 			`z: ${(rotation.z * (180 / Math.PI)).toFixed(2)}°, `;
 	}
 }
+
+export function showCollisionMessage(message) {
+	const messageDiv = document.getElementById("collision-message");
+	messageDiv.textContent = message;
+	messageDiv.style.opacity = 1;
+
+	setTimeout(() => {
+		messageDiv.style.opacity = 0;
+	}, 2000);
+}
