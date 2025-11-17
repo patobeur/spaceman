@@ -3,6 +3,9 @@ import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { loadRocks } from "./loader.js";
+
+export const rocks = [];
 
 export function setupScene() {
 	const scene = new THREE.Scene();
@@ -64,6 +67,26 @@ export function setupScene() {
 	ground.rotation.x = -Math.PI / 2;
 	ground.receiveShadow = true;
 	scene.add(ground);
+
+	loadRocks(scene, (rockModel) => {
+		const rock1 = rockModel.clone();
+		rock1.position.set(5, 0, 5);
+		rock1.userData = { ore: 10 };
+		scene.add(rock1);
+		rocks.push(rock1);
+
+		const rock2 = rockModel.clone();
+		rock2.position.set(-5, 0, -5);
+		rock2.userData = { ore: 10 };
+		scene.add(rock2);
+		rocks.push(rock2);
+
+		const rock3 = rockModel.clone();
+		rock3.position.set(5, 0, -5);
+		rock3.userData = { ore: 10 };
+		scene.add(rock3);
+		rocks.push(rock3);
+	});
 
 	window.addEventListener("resize", () => {
 		camera.aspect = window.innerWidth / window.innerHeight;
