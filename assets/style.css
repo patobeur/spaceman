@@ -1,0 +1,80 @@
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+		"Lucida Sans", Arial, sans-serif;
+}
+canvas {
+	display: block;
+}
+#options-menu {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background-color: rgba(0, 20, 30, 0.7);
+	color: #00ff00;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #00ff00;
+	text-shadow: 0 0 5px #00ff00;
+}
+#gitlink {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+#gitlink a {
+	border-radius: 5px;
+	background-color: rgba(0, 20, 30, 0.7);
+	padding: 5px;
+	color: #00ff00;
+	text-decoration: none;
+	border: 1px solid #00ff00;
+	text-shadow: 0 0 5px #00ff00;
+}
+#barres {
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	border-radius: 5px;
+	width: 40%;
+}
+.barre {
+	width: 0%;
+	margin: 0;
+	text-align: end;
+	text-align: center;
+	margin-bottom: 2px;
+	border-radius: 5px;
+	font-size: 0.6rem;
+	text-shadow: 0 0 5px #000;
+	box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5);
+}
+.barre::after {
+	text-transform: uppercase;
+	color: aliceblue;
+}
+.barre.vie {
+	background-color: brown;
+	border: 1px solid #ff0000;
+}
+.barre.energie {
+	background-color: rgb(42, 165, 63);
+	border: 1px solid #00ff00;
+}
+.barre.structure {
+	background-color: rgb(50, 42, 165);
+	border: 1px solid #0000ff;
+}
+.barre.vie::after {
+	content: "vie";
+}
+.barre.energie::after {
+	content: "energie";
+}
+.barre.structure::after {
+	content: "structure";
+}
