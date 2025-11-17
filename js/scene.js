@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-// import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 import { loadRocks } from "./loader.js";
@@ -32,14 +32,14 @@ export function setupScene() {
 	const renderPass = new RenderPass(scene, camera);
 	composer.addPass(renderPass);
 
-	// const bokehPass = new BokehPass(scene, camera, {
-	// 	focus: 1.0,
-	// 	aperture: 0.025,
-	// 	maxblur: 0.0015,
-	// 	width: window.innerWidth,
-	// 	height: window.innerHeight,
-	// });
-	// composer.addPass(bokehPass);
+	const bokehPass = new BokehPass(scene, camera, {
+		focus: 1.0,
+		aperture: 0.025,
+		maxblur: 0.0015,
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
+	composer.addPass(bokehPass);
 
 	const bloomPass = new UnrealBloomPass(
 		new THREE.Vector2(window.innerWidth, window.innerHeight),
