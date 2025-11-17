@@ -24,16 +24,26 @@
 		>
 
 		<div id="barres">
-			<div id="barredevie" style="width: 100%" class="barre vie"></div>
-			<div
-				id="barredenergie"
-				style="width: 100%"
-				class="barre energie"></div>
-			<div
-				id="barredestructure"
-				style="width: 50%"
-				class="barre structure"></div>
+			<div class="barrerow">
+				<div id="barredevie" style="width: 30%" class="barre vie"></div>
+				<div style="width: 70%" class="barre end"></div>
+			</div>
+			<div class="barrerow">
+				<div
+					id="barredenergie"
+					style="width: 100%"
+					class="barre energie"></div
+				><div style="width: 0%" class="barre end"></div>
+			</div>
+			<div class="barrerow">
+				<div
+					id="barredestructure"
+					style="width: 50%"
+					class="barre structure"></div
+				><div style="width: 50%" class="barre end"></div>
+			</div>
 		</div>
+
 		<script type="importmap">
 			{
 				"imports": {

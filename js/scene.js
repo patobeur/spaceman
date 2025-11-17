@@ -4,7 +4,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-
+import { Lights } from "/js/lights/Lights.js";
 import { loadRocks } from "./loader.js";
 
 export const rocks = [];
@@ -54,18 +54,7 @@ export function setupScene() {
 	hemiLight.position.set(0, 20, 0);
 	scene.add(hemiLight);
 
-	const dirLight = new THREE.DirectionalLight(0xffffff);
-	const lightDistance = 40;
-	dirLight.position.set(3, 40, 10);
-	dirLight.castShadow = true;
-	dirLight.shadow.camera.top = lightDistance;
-	dirLight.shadow.camera.bottom = -lightDistance;
-	dirLight.shadow.camera.left = -lightDistance;
-	dirLight.shadow.camera.right = lightDistance;
-	dirLight.shadow.camera.near = 0.1;
-	dirLight.shadow.camera.far = 4000;
-	dirLight.castShadow = true;
-	scene.add(dirLight);
+	const AllLights = new Lights(scene);
 
 	const grid = new THREE.GridHelper(100, 100, 0xffffff, 0xffffff);
 	grid.material.opacity = 0.5;
