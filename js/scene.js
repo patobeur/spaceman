@@ -2,7 +2,9 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+// import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
 import { loadRocks } from "./loader.js";
 
 export const rocks = [];
@@ -30,16 +32,25 @@ export function setupScene() {
 	const renderPass = new RenderPass(scene, camera);
 	composer.addPass(renderPass);
 
-	const bokehPass = new BokehPass(scene, camera, {
-		focus: 1.0,
-		aperture: 0.025,
-		maxblur: 0.0015,
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
-	composer.addPass(bokehPass);
+	// const bokehPass = new BokehPass(scene, camera, {
+	// 	focus: 1.0,
+	// 	aperture: 0.025,
+	// 	maxblur: 0.0015,
+	// 	width: window.innerWidth,
+	// 	height: window.innerHeight,
+	// });
+	// composer.addPass(bokehPass);
 
-	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666699);
+	const bloomPass = new UnrealBloomPass(
+		new THREE.Vector2(window.innerWidth, window.innerHeight),
+		0.6, // strength
+		0.1, // radius
+		0.85 // threshold
+	);
+	composer.addPass(bloomPass);
+	// Ambiance lumineuse et lumières directionnelles style TRON
+	const hemiLight = new THREE.HemisphereLight(0x000000, 0xffffff);
+	// const hemiLight = new THREE.HemisphereLight(0xffffff, 0x666699);
 	hemiLight.position.set(0, 20, 0);
 	scene.add(hemiLight);
 
@@ -53,6 +64,7 @@ export function setupScene() {
 	dirLight.shadow.camera.right = lightDistance;
 	dirLight.shadow.camera.near = 0.1;
 	dirLight.shadow.camera.far = 4000;
+	dirLight.castShadow = true;
 	scene.add(dirLight);
 
 	const grid = new THREE.GridHelper(100, 100, 0xffffff, 0xffffff);
