@@ -19,3 +19,24 @@ export function updateUI(model) {
 			`z: ${(rotation.z * (180 / Math.PI)).toFixed(2)}°, `;
 	}
 }
+
+export function showCollisionMessage(messageDiv, message, colliding = false) {
+	if (!messageDiv.classList.contains("active") && colliding === true) {
+		messageDiv.classList.add("active");
+		messageDiv.textContent = message;
+	} else if (messageDiv.classList.contains("active") && colliding === false) {
+		messageDiv.classList.remove("active");
+		messageDiv.textContent = "";
+	}
+}
+
+export function updateDistanceUI(distance) {
+	const distanceDiv = document.getElementById("distance-info");
+	if (distance !== Infinity) {
+		distanceDiv.textContent = `Ressource la plus proche: ${distance.toFixed(
+			2
+		)}m`;
+	} else {
+		distanceDiv.textContent = "Aucune ressource à proximité";
+	}
+}

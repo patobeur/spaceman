@@ -8,6 +8,7 @@ export function loadModel(scene, callback) {
 		"glb/RobotExpressive.glb",
 		(gltf) => {
 			const model = gltf.scene;
+			model.scale.set(0.2, 0.2, 0.2);
 			model.traverse((child) => {
 				if (child.isMesh) {
 					child.castShadow = true;
@@ -17,13 +18,26 @@ export function loadModel(scene, callback) {
 
 			const animations = gltf.animations;
 			const mixer = new THREE.AnimationMixer(model);
-			let walkAction, idleAction, standingAction, thumbsUpAction, currentAction;
+			let walkAction,
+				idleAction,
+				standingAction,
+				thumbsUpAction,
+				currentAction;
 
 			if (animations && animations.length) {
-				const walkClip = THREE.AnimationClip.findByName(animations, "Walking");
+				const walkClip = THREE.AnimationClip.findByName(
+					animations,
+					"Walking"
+				);
 				const idleClip = THREE.AnimationClip.findByName(animations, "Idle");
-				const standingClip = THREE.AnimationClip.findByName(animations, "Standing");
-				const thumbsUpClip = THREE.AnimationClip.findByName(animations, "ThumbsUp");
+				const standingClip = THREE.AnimationClip.findByName(
+					animations,
+					"Standing"
+				);
+				const thumbsUpClip = THREE.AnimationClip.findByName(
+					animations,
+					"ThumbsUp"
+				);
 
 				if (walkClip && idleClip && standingClip && thumbsUpClip) {
 					walkAction = mixer.clipAction(walkClip);
@@ -38,7 +52,15 @@ export function loadModel(scene, callback) {
 			}
 
 			scene.add(model);
-			callback(model, mixer, walkAction, idleAction, standingAction, thumbsUpAction, currentAction);
+			callback(
+				model,
+				mixer,
+				walkAction,
+				idleAction,
+				standingAction,
+				thumbsUpAction,
+				currentAction
+			);
 		},
 		undefined,
 		(error) => {
