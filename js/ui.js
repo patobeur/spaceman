@@ -29,3 +29,12 @@ export function showCollisionMessage(message) {
 		messageDiv.style.opacity = 0;
 	}, 2000);
 }
+
+export function updateDistanceUI(distance) {
+	const distanceDiv = document.getElementById("distance-info");
+	if (distance !== Infinity) {
+		distanceDiv.textContent = `Ressource la plus proche: ${distance.toFixed(2)}m`;
+	} else {
+		distanceDiv.textContent = "Aucune ressource à proximité";
+	}
+}
